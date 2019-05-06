@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+versions=$(
+  curl -s https://downloads.mysql.com/archives/community/ |
+  perl -0777 -ne 'print "$1\n" while />\s*(\d+\.\d+\.\d[^\<]*?)<\/option>/g' |
+  perl -pe 's/\ /-/g' |
+  xargs -n 1 echo | tac | xargs
+)
+
+echo "$versions"
